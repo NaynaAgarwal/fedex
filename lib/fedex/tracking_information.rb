@@ -28,10 +28,14 @@ module Fedex
       STANDARD_MPS
     }
 
-    attr_reader :tracking_number, :signature_name, :service_type, :status,
+    attr_reader :tracking_number, :signature_name, :service_type, :status, :status_code
                 :delivery_at, :events, :unique_tracking_number, :details, :other_identifiers
 
     def initialize(details = {})
+      if details.is_a?(Array)
+        details = details.first
+      end
+
       @details = details
 
       @tracking_number        = details[:tracking_number]
@@ -39,6 +43,7 @@ module Fedex
       @signature_name         = details[:delivery_signature_name]
       @service_type           = details[:service_type]
       @status                 = details[:status_description]
+      @status_code            = details[:status_code]
       @other_identifiers      = details[:other_identifiers]
 
       if details.has_key?(:actual_delivery_timestamp)
